@@ -1,11 +1,12 @@
 package cctv_test
 
 import (
-	"cctv"
 	"log/slog"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/alexzjc2003/go-cctv/cctv"
 )
 
 func TestPlatform(t *testing.T) {
