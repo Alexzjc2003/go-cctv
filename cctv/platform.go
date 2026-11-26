@@ -69,6 +69,9 @@ func (p *Platform) SubscribeWithConfig(topic Topic, cfg SubConfig) (Subscriber, 
 		sub = &subscriberLoss{ch: ch, topic: topic, platform: p}
 	}
 
+	p.rw.Lock()
+	defer p.rw.Unlock()
+
 	subs, ok := p.subs[topic]
 	if !ok {
 		subs = make([]Subscriber, 0, 64)
