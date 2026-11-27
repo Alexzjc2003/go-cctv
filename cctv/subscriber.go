@@ -65,6 +65,9 @@ type subscriberBlock struct {
 func (sub *subscriberBlock) dispatch(content Content) {
 	sub.mu.RLock()
 	defer sub.mu.RUnlock()
+	if sub.closed {
+		return
+	}
 
 	sub.ch <- content
 }
@@ -94,6 +97,9 @@ func (sub *subscriberNonBlock) dispatch(content Content) {
 	go func() {
 		sub.mu.RLock()
 		defer sub.mu.RUnlock()
+		if sub.closed {
+			return
+		}
 
 		sub.ch <- content
 	}()
