@@ -21,12 +21,13 @@ func NewPlatform() *Platform {
 // Publish some content of topic, only subscriptions to that specific topic will get notified.
 func (p *Platform) Publish(topic Topic, content Content) error {
 	p.rw.RLock()
-	subs, ok := p.subs[topic]
-	p.rw.RUnlock()
-
+	_subs, ok := p.subs[topic]
 	if !ok {
 		return fmt.Errorf("No dispatcher for topic(%s)", topic)
 	}
+
+	subs := slices.Clone(_subs)
+	p.rw.RUnlock()
 
 	for _, sub := range subs {
 		sub.dispatch(content)
